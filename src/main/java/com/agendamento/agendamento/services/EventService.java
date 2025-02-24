@@ -46,6 +46,7 @@ public class EventService {
         eventEntity.setState(eventDTO.state());
         eventEntity.setCity(eventDTO.city());
         eventEntity.setUserId(user.getId());
+        eventEntity.setIsSchedule(false);
         return this.saveEvent(eventEntity);
     }
 }

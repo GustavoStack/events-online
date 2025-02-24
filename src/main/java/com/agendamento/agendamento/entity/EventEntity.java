@@ -21,4 +21,5 @@ public class EventEntity {
     private String state;
     private String city;
     private String userId;
+    private Boolean isSchedule;
 }
