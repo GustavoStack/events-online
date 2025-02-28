@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 import com.agendamento.agendamento.dtos.UserDTO;
 import com.agendamento.agendamento.entity.UserEntity;
 import com.agendamento.agendamento.entity.UserType;
+import com.agendamento.agendamento.entity.exceptions.InvalideUserTypeException;
+import com.agendamento.agendamento.entity.exceptions.TransactionDontAuthorizedException;
 import com.agendamento.agendamento.repositories.UserRepository;
 
 @Service
@@ -48,7 +50,7 @@ public class UserService {
             throw new IllegalArgumentException("Usuário não pode ser nulo.");
         }
         if (entity.getUserType() == UserType.COMMUN_USER) {
-            throw new IllegalArgumentException("Usuário comum não pode criar eventos.");
+            throw new InvalideUserTypeException();
         }
     }
     public void validateTransaction(UserEntity entity){
@@ -56,16 +58,16 @@ public class UserService {
             throw new IllegalArgumentException("Usuário não pode ser nulo.");
         }
         if(entity.getUserType() == UserType.OWNER_USER){
-            throw new IllegalArgumentException("Usuários proprietários não podem realizar transações.");
+            throw new InvalideUserTypeException();
         }
     }
     //verificando se o usuario tem saldo suficiente
     public void validadeBalanceTransactional(UserEntity entity, BigDecimal value) {
         if(entity.getBalance().compareTo(value) < 0){
-            throw new IllegalArgumentException("Saldo insuficiente");
+            throw new TransactionDontAuthorizedException();
         }
         if(entity.getUserType() == UserType.OWNER_USER){
-            throw new IllegalArgumentException("Usuários proprietários não podem realizar transações");
+            throw new InvalideUserTypeException();
         }
     }
 }

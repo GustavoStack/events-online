@@ -10,6 +10,7 @@ import com.agendamento.agendamento.dtos.TransactionDTO;
 import com.agendamento.agendamento.entity.EventEntity;
 import com.agendamento.agendamento.entity.Transaction;
 import com.agendamento.agendamento.entity.UserEntity;
+import com.agendamento.agendamento.entity.exceptions.EventNotFoundException;
 import com.agendamento.agendamento.repositories.TransactionRepository;
 
 @Service
@@ -33,7 +34,7 @@ public class TransactionService {
         System.out.println("receiverType "+receiver.getUserType());
 
         if(event == null){
-            throw new IllegalArgumentException("Evento não encontrado!");
+            throw new EventNotFoundException();
         }
 
         userService.validateTransaction(sender);

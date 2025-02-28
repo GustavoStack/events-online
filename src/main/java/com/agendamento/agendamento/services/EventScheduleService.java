@@ -10,6 +10,9 @@ import com.agendamento.agendamento.dtos.EventScheduleDTO;
 import com.agendamento.agendamento.entity.EventScheduleEntity;
 import com.agendamento.agendamento.entity.EventEntity;
 import com.agendamento.agendamento.entity.UserEntity;
+import com.agendamento.agendamento.entity.exceptions.EventNotFoundException;
+import com.agendamento.agendamento.entity.exceptions.EventScheduleException;
+import com.agendamento.agendamento.entity.exceptions.UserNotFoundException;
 import com.agendamento.agendamento.repositories.EventRepository;
 import com.agendamento.agendamento.repositories.EventScheduleRepository;
 
@@ -27,10 +30,10 @@ public class EventScheduleService {
     public EventScheduleEntity scheduleEvent(EventScheduleDTO eventAgendaDTO){
         EventEntity event = this.eventService.findEventById(eventAgendaDTO.eventId());
         if(event == null){
-            throw new IllegalArgumentException("Event not found");
+            throw new EventNotFoundException();
         }
         if(event.getIsSchedule() == true){
-            throw new IllegalArgumentException("Event is already scheduled");
+            throw new EventScheduleException();
         }
         validateUser(eventAgendaDTO.userId());
         validateUser(eventAgendaDTO.ownerId());
@@ -48,7 +51,7 @@ public class EventScheduleService {
     public void validateUser(String id){
         UserEntity user = this.userService.getUserById(id);
         if(user == null){
-            throw new IllegalArgumentException("User not found");
+            throw new UserNotFoundException();
         }
     }
     public EventScheduleEntity findSchedule(String id){
