@@ -1,5 +1,6 @@
 package com.agendamento.agendamento.services;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -37,18 +38,20 @@ public class TransactionService {
             throw new EventNotFoundException();
         }
 
+        BigDecimal eventPrice = event.getPrice();
+
         userService.validateTransaction(sender);
         userService.validadeBalanceTransactional(sender, transactionDTO.value());
 
         Transaction newTransaction = new Transaction();
-        newTransaction.setAmount(transactionDTO.value());
+        newTransaction.setAmount(eventPrice);
         newTransaction.setSender(sender);
         newTransaction.setReceiver(receiver);
         newTransaction.setEventId(event.getId());
         newTransaction.setTimeStamp(LocalDateTime.now());
 
-        sender.setBalance(sender.getBalance().subtract(transactionDTO.value()));
-        receiver.setBalance(receiver.getBalance().add(transactionDTO.value()));
+        sender.setBalance(sender.getBalance().subtract(eventPrice));
+        receiver.setBalance(receiver.getBalance().add(eventPrice));
 
         this.transactionRepository.save(newTransaction);
         this.userService.saveUser(sender);

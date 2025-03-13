@@ -38,15 +38,22 @@ public class EventService {
             throw new IllegalArgumentException("EventDTO cannot be null");
         }
         UserEntity user = this.userService.getUserById(eventDTO.userId());
+    
         userService.validateUserForEvent(user);
+
+        String isScheduleString = eventDTO.isSchedule().toString();
+        System.out.println(isScheduleString);
+        boolean isSBoolean = Boolean.getBoolean(isScheduleString);
 
         EventEntity eventEntity = new EventEntity();
         eventEntity.setNumber(eventDTO.number());
         eventEntity.setStreet(eventDTO.street());
+        eventEntity.setImageUrl(eventDTO.imageUrl());
         eventEntity.setState(eventDTO.state());
+        eventEntity.setPrice(eventDTO.price());
         eventEntity.setCity(eventDTO.city());
         eventEntity.setUserId(user.getId());
-        eventEntity.setIsSchedule(false);
+        eventEntity.setIsSchedule(isSBoolean);
         return this.saveEvent(eventEntity);
     }
 }

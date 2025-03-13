@@ -31,6 +31,21 @@ public class UserEntity {
         this.lastName = dto.lastName();
         this.email = dto.email();
         this.balance = dto.balance();
-        this.userType = dto.userType();
+        this.userType = convertToEnum(dto.userType());
+    }
+
+    public UserType convertToEnum(UserType userType){
+        if (userType == null) {
+            return null;
+        }
+        String usuarioString = userType.toString();
+        switch (usuarioString.toUpperCase()) {
+            case "COMMUN_USER":
+                return UserType.COMMUN_USER;
+            case "OWNER_USER":
+                return UserType.OWNER_USER;
+            default:
+                throw new IllegalArgumentException("Invalid user type: " + userType);
+        }
     }
 }

@@ -32,7 +32,6 @@ public class UserService {
         if (user == null) {
             throw new IllegalArgumentException("Usuário não encontrado com ID: " + id);
         }
-        System.out.println("Buscando usuário ID: " + id + " - Tipo: " + user.getUserType());
         return user;
     }
     public UserEntity getUserByEmail(String email){
